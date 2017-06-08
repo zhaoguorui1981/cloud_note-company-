@@ -1,4 +1,4 @@
-package cloud_note.test;
+package cloud_note.test.dao;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -28,7 +28,7 @@ public class TestUserDAO {
 		SqlSessionFactory factory=
 				ac.getBean("ssfb",SqlSessionFactory.class);
 		System.out.println(factory);
-		dao=ac.getBean("cnUserDAO",CnUserDAO.class);
+		dao=ac.getBean("CnUserDAO",CnUserDAO.class);
  
 	}
 	@Test
