@@ -19,13 +19,5 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
-	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="ssfb">
-		<property name="dataSource">
-		<ref bean="ds"/>
-		</property>
-		<property name="mapperLocations" value="classpath:mapper/*.xml"/>
-	</bean>
-	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mscf">
-		<property name="basePackage" value="cn.tedu.cloudnote.dao"/>
-	</bean>
+	
 </beans>

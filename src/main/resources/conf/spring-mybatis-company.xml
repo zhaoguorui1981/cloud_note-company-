@@ -19,10 +19,17 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
 		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
+	<!-- 定义DataSource -->
+	<util:properties id="config" location="classpath:conf/db.properties"/>
+	<bean class="org.apache.commons.dbcp.BasicDataSource" id="ds">
+		<property name="driverClassName" value="#{config.driver}"/>
+		<property name="url" value="#{config.url}"/>
+		<property name="username" value="#{config.username}"/>
+		<property name="password" value="#{config.password}"/>
+	</bean> 
+	<!-- 定义SqlSession -->
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean" id="ssfb">
-		<property name="dataSource">
-		<ref bean="ds"/>
-		</property>
+		<property name="dataSource" ref="ds"/>
 		<property name="mapperLocations" value="classpath:mapper/*.xml"/>
 	</bean>
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" id="mscf">
