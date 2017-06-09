@@ -20,10 +20,10 @@ public class NoteUtil {
 		return s;
 	}
 	public static void main(String[] args) throws NoSuchAlgorithmException {
-//		System.out.println(md5("123456"));
+		System.out.println(md5("123456"));
 //		System.out.println(md5("1234567890"));
-		System.out.println(createId());
-		System.out.println(createId());
-		System.out.println(createId());
+//		System.out.println(createId());
+//		System.out.println(createId());
+//		System.out.println(createId());
 	}
 }
