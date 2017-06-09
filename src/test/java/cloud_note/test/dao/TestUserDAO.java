@@ -36,4 +36,13 @@ public class TestUserDAO {
 		CnUser cu=dao.findByCnUserName("zgr");
 		System.out.println(cu);
 	}
+	@Test
+	public void test2(){
+		CnUser cu=new CnUser();
+		cu.setCn_user_id("1");
+		cu.setCn_user_name("zhaoguorui");
+		cu.setCn_user_password("123456");
+		cu.setCn_user_nick("zgr");
+		dao.save(cu);
+	}
 }
