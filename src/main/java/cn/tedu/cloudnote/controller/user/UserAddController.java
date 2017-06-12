@@ -11,7 +11,7 @@ import cn.tedu.cloudnote.util.NoteResult;
 @Controller
 @RequestMapping("/user")
 public class UserAddController {
-	@Resource(name="CnUserService")
+	@Resource(name="cnUserService")
 	private CnUserService cnuserservice;
 	@RequestMapping("/regist.do")
 	@ResponseBody

@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import cn.tedu.cloudnote.entity.NoteBook;
-@Repository("NoteBookDAO")
+@Repository("noteBookDAO")
 public interface NoteBookDAO{
 	public List<NoteBook> findBookById(String id);
 	public List<NoteBook> findBookByUserName(String name);

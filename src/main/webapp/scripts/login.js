@@ -40,6 +40,9 @@
 					switch(status){
 						case 0:
 							//TODO 将用户信息写入Cookie
+							var user=result.data;
+							addCookie("uid",user.cn_user_id,2);
+							addCookie("name",user.cn_user_name,2);
 							window.location.href="edit.html"; //成功
 							break;
 						case 1:

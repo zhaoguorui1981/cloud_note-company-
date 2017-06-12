@@ -9,9 +9,9 @@ import cn.tedu.cloudnote.entity.CnUser;
 import cn.tedu.cloudnote.util.NoteException;
 import cn.tedu.cloudnote.util.NoteResult;
 import cn.tedu.cloudnote.util.NoteUtil;
-@Service("CnUserService")
+@Service("cnUserService")
 public class CnUserServiceMysqlImpl implements CnUserService{
-	@Resource(name="CnUserDAO")
+	@Resource(name="cnUserDAO")
 	private CnUserDAO dao;
 	public NoteResult checkLogin(String account,String password){
 		NoteResult nr=new NoteResult();
@@ -34,7 +34,8 @@ public class CnUserServiceMysqlImpl implements CnUserService{
 		}else{
 			nr.setStatus(0);;
 			nr.setMsg("登陆成功");
-			nr.setData(user);
+			user.setCn_user_password("");//清空密码,返回信息不包括密码
+			nr.setData(user); //返回user信息
 		}
 		return nr;
 	}

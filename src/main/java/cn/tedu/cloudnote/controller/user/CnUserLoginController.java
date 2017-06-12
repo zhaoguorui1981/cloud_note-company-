@@ -12,7 +12,7 @@ import cn.tedu.cloudnote.util.NoteResult;
 @Controller
 @RequestMapping("/user")
 public class CnUserLoginController {
-	@Resource(name="CnUserService")
+	@Resource(name="cnUserService")
 	private CnUserService cus;
 	@RequestMapping("/login.do")
 	@ResponseBody
