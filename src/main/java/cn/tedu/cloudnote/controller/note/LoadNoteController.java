@@ -10,13 +10,13 @@ import cn.tedu.cloudnote.service.NoteService;
 import cn.tedu.cloudnote.util.NoteResult;
 
 @Controller
-public class LoadNotesController {
+public class LoadNoteController {
 	@Resource(name="noteService")
 	private NoteService noteService;
-	@RequestMapping("/note/loadnotes.do")
+	@RequestMapping("/note/load.do")
 	@ResponseBody
-	public NoteResult execute(String bookId){
-		NoteResult result=noteService.loadNotes(bookId);
+	public NoteResult execute(String noteId){
+		NoteResult result=noteService.loadNote(noteId);
 		return result;
 	}
 	

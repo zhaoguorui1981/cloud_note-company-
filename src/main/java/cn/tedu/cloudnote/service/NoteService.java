@@ -7,5 +7,6 @@ import org.springframework.stereotype.Service;
 import cn.tedu.cloudnote.dao.NoteDAO;
 import cn.tedu.cloudnote.util.NoteResult;
 public interface NoteService {
-	public NoteResult loadNote(String bookId);
+	public NoteResult loadNotes(String bookId);
+	public NoteResult loadNote(String noteId);
 }

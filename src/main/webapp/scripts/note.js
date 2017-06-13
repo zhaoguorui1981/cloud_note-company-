@@ -48,3 +48,25 @@ function loadBookNotes(){
 	})
 
 }
+//根据笔记ID加载笔记信息
+function loadNotes(){
+	var noteId=$(this).data("noteId");
+	$('#note_ul').find('a').removeClass();
+	$(this).find('a').addClass("checked");
+	$.ajax({
+		url:base_path+"/note/load.do",
+		type:"post",
+		data:{"noteId":noteId},
+		dataType:"json",
+		success:function(result){
+			if(result.status==0){
+				var title=result.data.cn_note_title;//获取笔记标题
+				var content=result.data.cn_note_body;//获取笔记内容
+				//设置编辑区域
+				$('#input_note_title').val(title);
+				um.setContent(content);
+			}
+		},
+		error:function(){alert("笔记内容加载异常")}
+	})
+}

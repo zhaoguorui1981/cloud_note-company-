@@ -33,7 +33,10 @@
 				//	alert(1);
 				//})
 				$("#book_ul").on("click","li",loadBookNotes)
+				//3.给笔记li绑定单击处理
+				$('#note_ul').on("click","li",loadNotes)
 			})
+			
 		</script>
     </head>
     <body class="animated fadeIn">
@@ -309,9 +312,10 @@
 						$('.opacity_bg').show();
 					});
 				}
-			//实例化Ueditor编辑器
-			var um = UM.getEditor('myEditor');
 			*/
+			//实例化Ueditor编辑器
+		var um = UM.getEditor('myEditor');
+		
 		</script>
 		</body>		
 </html>
