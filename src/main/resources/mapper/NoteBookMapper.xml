@@ -12,4 +12,10 @@
 		WHERE nb.cn_user_id=user.cn_user_id
 		AND user.cn_user_name=#{name}
 	</select>
+	<insert id="saveNotebook" parameterType="cn.tedu.cloudnote.entity.NoteBook">
+		INSERT INTO cn_notebook
+		(cn_notebook_id,cn_user_id,cn_notebook_name,cn_notebook_createtime)
+		VALUES
+		(#{cn_notebook_id},#{cn_user_id},#{cn_notebook_name},#{cn_notebook_createtime})
+	</insert>
 </mapper>

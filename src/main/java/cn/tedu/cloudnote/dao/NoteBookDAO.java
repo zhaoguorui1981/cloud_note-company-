@@ -9,4 +9,5 @@ import cn.tedu.cloudnote.entity.NoteBook;
 public interface NoteBookDAO{
 	public List<NoteBook> findBookById(String id);
 	public List<NoteBook> findBookByUserName(String name);
+	public int saveNotebook(NoteBook book);
 }

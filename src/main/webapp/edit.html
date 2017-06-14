@@ -45,7 +45,40 @@
 			})
 			
 			function addNotebook(){
-					alert(1);
+				//获取请求参数
+				var userId=getCookie("uid");
+				var name=$('#input_notebook').val();
+				//校验请求参数
+				var ok=true;
+				if(!name){
+					$('#addnotebook_msg').html("名称为空").css({"color":"red","font-size":"10px","margin-left":"40px"});
+					ok=false;
+				}
+				if(!userId){
+					alert("系统繁忙,请重新登录");
+					ok=false;
+					window.location.href="log_in.html";
+				}
+				//发送ajax请求
+				if(ok){
+					$.ajax({
+						url:base_path+"/book/add.do",
+						type:"post",
+						data:{"userId":userId,"name":name},
+						dataType:"json",
+						success:function(result){
+							if(result.status==0){
+								alert(result.msg);
+								$('#book_ul').empty();
+								loadUserBooks();
+							}else{
+								alert(result.msg);
+							}
+							
+						},
+						error:function(){alert("添加笔记本失败")}
+					})
+				}
 			}
 		</script>
     </head>
