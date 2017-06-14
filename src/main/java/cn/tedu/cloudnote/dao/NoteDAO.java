@@ -10,4 +10,5 @@ import cn.tedu.cloudnote.entity.Note;
 public interface NoteDAO {
 	public List<Map> findNoteByBookId(String bookId);
 	public Note findNoteByNotId(String noteId);
+	public int updateNote(Note note);
 }

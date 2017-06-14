@@ -22,21 +22,31 @@
 		<script type="text/javascript" src="scripts/cookie_util.js"></script>
 		<script type="text/javascript" src="scripts/book.js"></script>
 		<script type="text/javascript" src="scripts/note.js"></script>
+		<script type="text/javascript" src="scripts/alert.js"></script>
 		<script type="text/javascript">
-			//var userId=getCookie("uid")
-			//alert(userId);
+
 			$(function(){
 				//1.加载用户笔记本列表
 				loadUserBooks();
 				//2.给笔记本li绑定单击处理(动态绑定处理)
-					//$('#book_ul li').click(function(){
-				//	alert(1);
-				//})
 				$("#book_ul").on("click","li",loadBookNotes)
 				//3.给笔记li绑定单击处理
 				$('#note_ul').on("click","li",loadNotes)
+				//4.为保存笔记绑定单击处理,笔记更新
+				$('#save_note').click(updateNote);
+				//5.创建笔记本对话框
+				$('#add_notebook').click(alertAddNotebookWindow);
+				//6关闭对话框
+				$('#can').on('click','.cancle,.close',closeAlertWindow);
+				//7创建对话框中绑定创建按钮
+				
+				$('#can').on('click','#alert_createnotebook',addNotebook);
+				
 			})
 			
+			function addNotebook(){
+					alert(1);
+			}
 		</script>
     </head>
     <body class="animated fadeIn">
@@ -213,6 +223,7 @@
 								<div class="row" >
 									<div class="col-xs-8">
 										<input type="text" class="form-control" id="input_note_title" placeholder='笔记标题...'>
+										<span id="note__msg"></span>
 									</div>
 								</div>
 								<!--- 笔记标题 --->
@@ -304,7 +315,6 @@
 		<script type="text/javascript" src="scripts/ue/lang/zh-cn.js"></script>
 		
 		<script type="text/javascript">
-		/*
 		//重写JS原生alert函数
 				window.alert=function(e){
 					$('#can').load('./alert/alert_error.html',function(){
@@ -312,7 +322,6 @@
 						$('.opacity_bg').show();
 					});
 				}
-			*/
 			//实例化Ueditor编辑器
 		var um = UM.getEditor('myEditor');
 		

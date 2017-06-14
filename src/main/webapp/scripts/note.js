@@ -1,3 +1,38 @@
+//更新笔记
+function updateNote(){
+	//获取请求参数
+	var title=$('#input_note_title').val();
+	var body=um.getContent();
+	var noteId=$('#note_ul a.checked').parent().data("noteId");
+	//校验请求参数
+	if(!noteId){
+		alert("请选择笔记")
+	}else if(!title){
+		$('#note__msg').html("笔记标题为空").css({"color":"red","font-size":"10px"})
+	}else{
+		$.ajax({
+			url:base_path+"/note/update.do",
+			type:"post",
+			data:{"title":title,"body":body,"noteId":noteId},
+			dataType:"json",
+			success:function(result){
+				if(result.status==0){
+					alert(result.msg)
+					var sli="";
+					sli+='		<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i>';
+					sli+=title;
+					sli+='		<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-chevron-down"></i></button>';
+					$('#note_ul').find('a.checked').html(sli);
+				}else{
+					alert(result.msg);
+				}
+			},
+			error:function(){
+				alert("笔记更新异常")
+			}
+		})
+	}
+}
 //封装笔记相关操作
 function loadBookNotes(){
 	//获得请求参数
@@ -64,7 +99,11 @@ function loadNotes(){
 				var content=result.data.cn_note_body;//获取笔记内容
 				//设置编辑区域
 				$('#input_note_title').val(title);
-				um.setContent(content);
+				if(content==null){
+					um.setContent("");
+				}else{
+					um.setContent(content);
+				}
 			}
 		},
 		error:function(){alert("笔记内容加载异常")}

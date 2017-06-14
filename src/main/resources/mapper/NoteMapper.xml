@@ -12,4 +12,9 @@
 		FROM cn_note
 		WHERE cn_note_id=#{noteId}
 	</select>
+	<update id="updateNote" parameterType="cn.tedu.cloudnote.entity.Note">
+		UPDATE cn_note
+		set cn_note_title=#{cn_note_title},cn_note_body=#{cn_note_body},cn_note_last_modify_time=#{cn_note_last_modify_time}
+		WHERE cn_note_id=#{cn_note_id}
+	</update>
 </mapper>

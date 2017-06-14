@@ -31,5 +31,23 @@ public class NoteServiceImpl implements Serializable, NoteService {
 		nr.setData(note);
 		return nr;
 	}
+	public NoteResult updateNote(String noteId, String body, String title) {
+		Note note=new Note();
+		note.setCn_note_id(noteId);
+		note.setCn_note_body(body);
+		note.setCn_note_title(title);
+		Long time=System.currentTimeMillis();
+		note.setCn_note_last_modify_time(time);
+		int index=dao.updateNote(note);
+		NoteResult nr=new NoteResult();
+		if(index>0){
+			nr.setStatus(0);
+			nr.setMsg("更新成功");
+		}else{
+			nr.setStatus(1);
+			nr.setMsg("更新失败");
+		}
+		return nr;
+	}
 
 }
