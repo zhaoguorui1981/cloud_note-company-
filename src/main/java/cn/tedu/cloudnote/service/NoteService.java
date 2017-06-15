@@ -10,4 +10,6 @@ public interface NoteService {
 	public NoteResult loadNotes(String bookId);
 	public NoteResult loadNote(String noteId);
 	public NoteResult updateNote(String noteId,String body,String title);
+	public NoteResult addNote(String userId,String title,String bookId);
+	
 }

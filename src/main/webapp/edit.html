@@ -38,48 +38,51 @@
 				$('#add_notebook').click(alertAddNotebookWindow);
 				//6关闭对话框
 				$('#can').on('click','.cancle,.close',closeAlertWindow);
-				//7创建对话框中绑定创建按钮
-				
+				//7创建笔记本对话框中绑定创建按钮
 				$('#can').on('click','#alert_createnotebook',addNotebook);
+				//8.创建笔记对话框
+				$('#add_note').click(alertAddNoteWindow);
+				//9.创建笔记对话框中绑定创建按钮
+				$('#can').on('click','#btn_createnote',addNote);
+				//plus-1.1 双击笔记本创建重命名对话框
+				$('#book_ul').on('dblclick','li',renameNotebookWindow);
+				//puls-1.2 为笔记本重命名
+				$('#can').on('click','#btn_renamenotebook',renameNotebook);
 				
 			})
-			
-			function addNotebook(){
+			function renameNotebook(){
 				//获取请求参数
-				var userId=getCookie("uid");
-				var name=$('#input_notebook').val();
+				var name=$('#input_notebook_rename').val().trim();
+				var bookId=$('#book_ul a.checked').parent().data("bookId")		
 				//校验请求参数
 				var ok=true;
 				if(!name){
-					$('#addnotebook_msg').html("名称为空").css({"color":"red","font-size":"10px","margin-left":"40px"});
+					$('#renamenotebook_msg').html("请输入新的笔记本名称")
 					ok=false;
 				}
-				if(!userId){
-					alert("系统繁忙,请重新登录");
+				if(!bookId){
+					alert("系统异常,请重新选择笔记本")
 					ok=false;
-					window.location.href="log_in.html";
 				}
 				//发送ajax请求
 				if(ok){
 					$.ajax({
-						url:base_path+"/book/add.do",
+						url:base_path+"/book/rename.do",
 						type:"post",
-						data:{"userId":userId,"name":name},
+						data:{"name":name,"bookId":bookId},
 						dataType:"json",
 						success:function(result){
-							if(result.status==0){
-								alert(result.msg);
-								$('#book_ul').empty();
-								loadUserBooks();
-							}else{
-								alert(result.msg);
+							if(result.status==0){//回调成功
+								
 							}
-							
 						},
-						error:function(){alert("添加笔记本失败")}
+						error:function(){alert("重命名异常")}
 					})
+
 				}
 			}
+
+				
 		</script>
     </head>
     <body class="animated fadeIn">

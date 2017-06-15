@@ -31,14 +31,32 @@ public class NoteBookServiceImpl implements NotebookService {
 		book.setCn_user_id(userId);
 		Timestamp time=new Timestamp(System.currentTimeMillis());
 		book.setCn_notebook_createtime(time);
+		book.setCn_notebook_type_id("5");
+		book.setCn_notebook_desc("");
 		int index=dao.saveNotebook(book);
 		NoteResult nr=new NoteResult();
 		if(index>0){
 			nr.setStatus(0);
 			nr.setMsg("添加成功");
+			nr.setData(book);
 		}else{
 			nr.setStatus(1);
 			nr.setMsg("添加失败");
+		}
+		return nr;
+	}
+	public NoteResult renameNotebook(String bookId, String name) {
+		NoteBook book=new NoteBook();
+		book.setCn_notebook_id(bookId);
+		book.setCn_notebook_name(name);
+		int index=dao.reNameByBookId(book);
+		NoteResult nr=new NoteResult();
+		if(index>0){
+			nr.setStatus(0);
+			nr.setMsg("重命名成功");
+		}else{
+			nr.setStatus(1);
+			nr.setMsg("重命名失败");
 		}
 		return nr;
 	}

@@ -1,3 +1,52 @@
+//创建笔记本功能		
+function addNotebook(){
+	//获取请求参数
+	var userId=getCookie("uid");
+	var name=$('#input_notebook').val().trim();
+	//校验请求参数
+	var ok=true;
+	if(!name){//名称不能为空
+		$('#addnotebook_msg').html("名称为空").css({"color":"red"});
+		ok=false;
+	}
+	if(!userId){//用户ID不能为空
+		alert("系统繁忙,请重新登录");
+		ok=false;
+		window.location.href="log_in.html";
+	}
+	var lis=$('#book_ul').find('li');
+	for (var i = 0; i < lis.length; i++) {
+		var existname= $(lis[i]).text();
+		if(name==existname){//笔记本名称不能重复
+			ok=false;
+			$('#addnotebook_msg').html("名称已存在").css({"color":"red"});
+			break;
+		}
+	}			
+	//发送ajax请求
+	if(ok){
+		$.ajax({
+			url:base_path+"/book/add.do",
+			type:"post",
+			data:{"userId":userId,"name":name},
+			dataType:"json",
+			success:function(result){
+				if(result.status==0){
+					closeAlertWindow();
+					var bookId=result.data.cn_notebook_id;
+					var bookName=result.data.cn_notebook_name;
+					createBookLi(bookId,bookName)
+					alert(result.msg);
+				}else{
+					alert(result.msg);
+				}
+				
+			},
+			error:function(){alert("添加笔记本失败")}
+		})
+	}
+	
+}
 //封装笔记本相关处理
 function loadUserBooks(){
 	//页面载入发送ajax请求加载用户笔记本liebiao
@@ -20,16 +69,7 @@ function loadUserBooks(){
 						var bookId=books[i].cn_notebook_id;//获取笔记本ID
 						var bookName=books[i].cn_notebook_name;//获取笔记本名称
 						//构建列表元素
-						var sli="";
-							sli+='<li class="online">';
-							sli+=  '<a>';
-							sli+=    '<i class="fa fa-book" title="online" rel="tooltip-bottom">';
-							sli+=    '</i>'+bookName
-							sli+=  '</a>';
-							sli+='</li>';
-						var $li=$(sli);
-							$li.data("bookId",bookId);
-					$("#book_ul").append($li);
+						createBookLi(bookId,bookName)
 					}
 				}
 			},
@@ -38,4 +78,17 @@ function loadUserBooks(){
 			}
 		})
 	}	
+}
+//封装创建笔记本Li方法
+function createBookLi(bookId,bookName){
+	var sli="";
+	sli+='<li class="online">';
+	sli+=  '<a>';
+	sli+=    '<i class="fa fa-book" title="online" rel="tooltip-bottom">';
+	sli+=    '</i>'+bookName
+	sli+=  '</a>';
+	sli+='</li>';
+var $li=$(sli);
+	$li.data("bookId",bookId);
+	$("#book_ul").append($li);
 }

@@ -18,4 +18,9 @@
 		VALUES
 		(#{cn_notebook_id},#{cn_user_id},#{cn_notebook_name},#{cn_notebook_createtime})
 	</insert>
+	<update id="reNameByBookId" parameterType="cn.tedu.cloudnote.entity.NoteBook">
+		update cn_notebook
+		SET cn_notebook_name=#{cn_notebook_name}
+		WHERE cn_notebook_id=#{cn_notebook_id}
+	</update>
 </mapper>
