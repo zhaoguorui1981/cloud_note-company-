@@ -1,3 +1,44 @@
+//将笔记本重命名
+function renameNotebook(){
+				
+	//获取请求参数
+	var name=$('#input_notebook_rename').val().trim();
+	var bookId=$('#book_ul a.checked').parent().data("bookId")		
+	console.log(bookId);
+	//校验请求参数
+	var ok=true;
+	if(!name){
+		$('#renamenotebook_msg').html("请输入新的笔记本名称")
+		ok=false;
+	}
+	if(!bookId){
+		alert("系统异常,请重新选择笔记本")
+		ok=false;
+	}
+	//发送ajax请求
+	if(ok){
+		$.ajax({
+			url:base_path+"/book/rename.do",
+			type:"post",
+			data:{"name":name,"bookId":bookId},
+			dataType:"json",
+			success:function(result){
+				if(result.status==0){//回调成功
+					closeAlertWindow();
+				var si='';
+				si+=    '<i class="fa fa-book" title="online" rel="tooltip-bottom">';
+				si+=    '</i>'+name
+				$('#book_ul a.checked').html(si);
+				var bookId2=$('#book_ul a.checked').parent().data("bookId")		
+				console.log(bookId2);
+				alert(result.msg)
+				}
+			},
+			error:function(){alert("重命名异常")}
+		})
+
+	}
+}
 //创建笔记本功能		
 function addNotebook(){
 	//获取请求参数
