@@ -3,9 +3,10 @@
  "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
 <mapper namespace="cn.tedu.cloudnote.dao.NoteDAO">
 	<select id="findNoteByBookId" parameterType="string" resultType="map">
-		SELECT cn_note_id,cn_note_title
+		SELECT cn_note_id,cn_note_title,cn_note_type_id
 		FROM cn_note
 		WHERE cn_notebook_id=#{bookId}
+		AND cn_note_status_id='1'
 	</select>
 	<select id="findNoteByNotId" parameterType="string" resultType="cn.tedu.cloudnote.entity.Note">
 		SELECT *
@@ -17,6 +18,11 @@
 		set cn_note_title=#{cn_note_title},cn_note_body=#{cn_note_body},cn_note_last_modify_time=#{cn_note_last_modify_time}
 		WHERE cn_note_id=#{cn_note_id}
 	</update>
+	<update id="updateNoteTypeId" parameterType="cn.tedu.cloudnote.entity.Note">
+		UPDATE cn_note
+		set cn_note_type_id=#{cn_note_type_id}
+		WHERE cn_note_id=#{cn_note_id}
+	</update>
 	<insert id="saveNote" parameterType="cn.tedu.cloudnote.entity.Note">
 		INSERT INTO cn_note
 		(cn_note_id,cn_notebook_id,cn_user_id,cn_note_status_id,
@@ -25,4 +31,15 @@
 		(#{cn_note_id},#{cn_notebook_id},#{cn_user_id},'1',
 		'1',#{cn_note_title},'',#{cn_note_create_time},#{cn_note_last_modify_time})
 	</insert>
+	<update id="updateStatus" parameterType="string">
+		UPDATE cn_note
+		SET cn_note_status_id='2'
+		WHERE cn_note_id=#{id}
+	</update>
+	<!-- 根据笔记ID移动笔记 -->
+	<update id="updateBookId" parameterType="map">
+		UPDATE cn_note
+		SET cn_notebook_id=#{bookId}
+		WHERE cn_note_id=#{noteId}
+	</update>
 </mapper>

@@ -1,6 +1,7 @@
 package cn.tedu.cloudnote.service;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,13 +10,17 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import cn.tedu.cloudnote.dao.NoteDAO;
+import cn.tedu.cloudnote.dao.ShareDAO;
 import cn.tedu.cloudnote.entity.Note;
+import cn.tedu.cloudnote.entity.Share;
 import cn.tedu.cloudnote.util.NoteResult;
 import cn.tedu.cloudnote.util.NoteUtil;
 @Service("noteService")
 public class NoteServiceImpl implements Serializable, NoteService {
 	@Resource(name="noteDAO")
 	private NoteDAO dao;
+	@Resource(name="shareDAO")
+	private ShareDAO sdao;
 	public NoteResult loadNotes(String bookId) {
 		NoteResult nr=new NoteResult();
 		List<Map>list=dao.findNoteByBookId(bookId);
@@ -71,5 +76,96 @@ public class NoteServiceImpl implements Serializable, NoteService {
 		}
 		return nr;
 	}
+	public NoteResult deleteNote(String noteId) {
+		NoteResult nr=new NoteResult();
+		int index=dao.updateStatus(noteId);
+		if(index>0){
+			nr.setStatus(0);
+			nr.setMsg("删除成功");
+		}else{
+			nr.setStatus(1);
+			nr.setMsg("删除失败");
+		}
+		return nr;
+	}
+//	public NoteResult moveNote(String noteId, String bookId) {
+//		Note note=new Note();
+//		note.setCn_note_id(noteId);
+//		note.setCn_notebook_id(bookId);
+//		int rows=dao.updateBookId(note);
+//		NoteResult nr=new NoteResult();
+//		if(rows>0){
+//			nr.setStatus(0);
+//			nr.setMsg("移动成功");
+//		}else{
+//			nr.setStatus(1);
+//			nr.setMsg("移动失败");
+//		}
+//		return nr;
+//	}
+	public NoteResult moveNote(String noteId, String bookId) {
+		
+		Map map=new HashMap();
+		map.put("noteId", noteId);
+		map.put("bookId", bookId);
+		int rows=dao.updateBookId(map);
+		NoteResult nr=new NoteResult();
+		if(rows>0){
+			nr.setStatus(0);
+			nr.setMsg("移动成功");
+		}else{
+			nr.setStatus(1);
+			nr.setMsg("移动失败");
+		}
+		return nr;
+	}
+	public NoteResult shareNote(String noteId) {
+		//按照ID取出NOTE对象
+		Note note=dao.findNoteByNotId(noteId);
+		
+		NoteResult nr=new NoteResult();
+		//如果文章已经被收藏,则返回ajax提示
+		if(note==null){
+			nr.setStatus(1);
+			nr.setMsg("文章分享失败");
+			return nr;
+		}
+		if("2".equals(note.getCn_note_type_id())){
+				nr.setStatus(2);
+				nr.setMsg("文章已经被分享");
+		}else{
+				Share snote=new Share();
+				snote.setCn_note_id(noteId);
+				snote.setCn_share_body(note.getCn_note_body());
+				snote.setCn_share_id(NoteUtil.createId());
+				snote.setCn_share_title(note.getCn_note_title());
+				int rows=sdao.saveShareNote(snote);
+				if(rows>0){
+					//将分享成功的文章在note表中typeid变更为2
+					note.setCn_note_type_id("2");
+					dao.updateNoteTypeId(note);
+					nr.setStatus(0);
+					nr.setMsg("文章分享成功");
+				}else{
+					nr.setStatus(1);
+					nr.setMsg("文章分享失败");
+				}
+		}
+		return nr;
+	}
+	public NoteResult searchShareNote(String keyword) {
+		Share sharenote=sdao.findNoteByKeyword(keyword);
+		NoteResult nr=new NoteResult();
+		if(sharenote==null){
+			nr.setStatus(1);
+			nr.setMsg("没有匹配到任何结果");
+		}else{
+			nr.setStatus(0);
+			nr.setMsg("搜索成功");
+			nr.setData(sharenote);
+		}
+		return nr;
+	}
+	
 
 }

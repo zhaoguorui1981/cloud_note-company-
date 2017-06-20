@@ -11,5 +11,8 @@ public interface NoteService {
 	public NoteResult loadNote(String noteId);
 	public NoteResult updateNote(String noteId,String body,String title);
 	public NoteResult addNote(String userId,String title,String bookId);
-	
+	public NoteResult deleteNote(String noteId);
+	public NoteResult moveNote(String noteId,String bookId);
+	public NoteResult shareNote(String noteId);
+	public NoteResult searchShareNote(String keyword);
 }

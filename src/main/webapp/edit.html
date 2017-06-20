@@ -48,11 +48,48 @@
 				$('#book_ul').on('dblclick','li',renameNotebookWindow);
 				//puls-1.2 为笔记本重命名
 				$('#can').on('click','#btn_renamenotebook',renameNotebook);
-				
+				//11.弹出笔记菜单
+				$('#note_ul').on('click','.btn_slide_down',showNoteMenu);
+				//12.点击页面任何地方隐藏笔记菜单
+				$('body').click(hideNoteMenu);
+				//13.创建删除笔记对话框&绑定确定按钮确认删除
+				$('#note_ul').on('click','.btn_delete',alertDeleteNoteWindow);
+				$('#can').on('click','#btn_notedelete',deleteNote);
+				//14.创建移动对话框&绑定移动对话框确定按钮,进行笔记转移
+				$('#note_ul').on('click','.btn_move',alertMoveNoteWindow)
+				$('#can').on('click','#btn_moveNote',moveNote);
+				//15.创建笔记分享
+				$('#note_ul').on('click','.btn_share',shareNote)
+				//16.搜索笔记
+				 $("#search_note").keydown(function() {
+		             if (event.keyCode == "13") {//keyCode=13是回车键
+		                searchNote();
+		             }
+		         });
 			})
-			
-
-				
+	  	function searchNote(){
+				//获取请求参数
+				var keyword= $("#search_note").val();
+				//校验请求参数
+				var ok=true;
+				if(!keyword){
+					alert("请输入搜索关键字");
+					ok=false;
+				}
+				//校验完成,发送ajax请求
+				if(ok){
+					$.ajax({
+						url:base_path+"/note/search.do",
+						type:"post",
+						data:{"keyword":keyword},
+						dataType:"json",
+						success:function(){
+					
+						},
+						error:function(){alert("搜索异常")}
+					})
+				}
+			}
 		</script>
     </head>
     <body class="animated fadeIn">
