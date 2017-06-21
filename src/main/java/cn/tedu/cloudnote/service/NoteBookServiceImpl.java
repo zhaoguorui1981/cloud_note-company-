@@ -6,12 +6,14 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.tedu.cloudnote.dao.NoteBookDAO;
 import cn.tedu.cloudnote.entity.NoteBook;
 import cn.tedu.cloudnote.util.NoteResult;
 import cn.tedu.cloudnote.util.NoteUtil;
 @Service("notebookService")
+@Transactional
 public class NoteBookServiceImpl implements NotebookService {
 	@Resource(name="noteBookDAO")
 	private NoteBookDAO dao;

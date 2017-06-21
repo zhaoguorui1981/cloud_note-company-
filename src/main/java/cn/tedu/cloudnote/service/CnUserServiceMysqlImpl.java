@@ -3,6 +3,7 @@ package cn.tedu.cloudnote.service;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.tedu.cloudnote.dao.CnUserDAO;
 import cn.tedu.cloudnote.entity.CnUser;
@@ -10,6 +11,7 @@ import cn.tedu.cloudnote.util.NoteException;
 import cn.tedu.cloudnote.util.NoteResult;
 import cn.tedu.cloudnote.util.NoteUtil;
 @Service("cnUserService")
+@Transactional
 public class CnUserServiceMysqlImpl implements CnUserService{
 	@Resource(name="cnUserDAO")
 	private CnUserDAO dao;
@@ -39,6 +41,7 @@ public class CnUserServiceMysqlImpl implements CnUserService{
 		}
 		return nr;
 	}
+
 	public NoteResult addUser(String account, String nick, String password) {
 		NoteResult nr=new NoteResult();
 		if(dao.findByCnUserName(account)!=null){
