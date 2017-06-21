@@ -10,13 +10,13 @@ import cn.tedu.cloudnote.service.NoteService;
 import cn.tedu.cloudnote.util.NoteResult;
 
 @Controller
-public class SearchNoteController {
+public class LoadShareController {
 	@Resource(name="noteService")
 	private NoteService noteService;
-	@RequestMapping("/note/search.do")
+	@RequestMapping("/note/loadShare.do")
 	@ResponseBody
-	public NoteResult execute(String keyword,int page){
-		NoteResult nr=noteService.searchShareNote(keyword,page);
+	public NoteResult execute(String shareId){
+		NoteResult nr=noteService.loadShare(shareId);
 		return nr;
 	}
 }

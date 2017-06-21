@@ -153,16 +153,40 @@ public class NoteServiceImpl implements Serializable, NoteService {
 		}
 		return nr;
 	}
-	public NoteResult searchShareNote(String keyword) {
-		Share sharenote=sdao.findNoteByKeyword(keyword);
+	public NoteResult searchShareNote(String keyword,int page) {
+		if(page<1){
+			page=1;
+		}
+		int begin=(page-1)*5;
+		String title="%";
+		if(keyword!=null && !"".equals(keyword)){
+			title="%"+keyword+"%";
+		}	
 		NoteResult nr=new NoteResult();
-		if(sharenote==null){
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("begin", begin);
+		map.put("keyword",title);
+		List<Share> list=sdao.findNoteByKeyword(map);
+		if(list.size()==0){
 			nr.setStatus(1);
 			nr.setMsg("没有匹配到任何结果");
 		}else{
 			nr.setStatus(0);
 			nr.setMsg("搜索成功");
-			nr.setData(sharenote);
+			nr.setData(list);
+		}
+		return nr;
+	}
+	public NoteResult loadShare(String shareId) {
+		Share share=sdao.findShareNoteById(shareId);
+		NoteResult nr=new NoteResult();
+		if(share==null){
+			nr.setStatus(1);
+			nr.setMsg("分享笔记加载失败");
+		}else{
+			nr.setStatus(0);
+			nr.setMsg("分享笔记加载成功");
+			nr.setData(share);
 		}
 		return nr;
 	}

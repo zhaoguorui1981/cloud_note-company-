@@ -9,9 +9,15 @@
 		VALUES
 		(#{cn_share_id},#{cn_share_title},#{cn_share_body},#{cn_note_id})
 	</insert>
-	<select id="findNoteByKeyword" parameterType="string" resultType="cn.tedu.cloudnote.entity.Share">
+	<select id="findNoteByKeyword" parameterType="map" resultType="cn.tedu.cloudnote.entity.Share">
 		SELECT * 
 		FROM cn_share
-		WHERE cn_share_title LIKE #{name}
+		WHERE cn_share_title LIKE #{keyword}
+		LIMIT #{begin},5
+	</select>
+	<select id="findShareNoteById" parameterType="string" resultType="cn.tedu.cloudnote.entity.Share">
+		SELECT * 
+		FROM cn_share
+		WHERE cn_share_id=#{id}
 	</select>
 </mapper>

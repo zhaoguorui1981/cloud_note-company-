@@ -24,7 +24,8 @@
 		<script type="text/javascript" src="scripts/note.js"></script>
 		<script type="text/javascript" src="scripts/alert.js"></script>
 		<script type="text/javascript">
-
+			var page=1;
+			var keyword='';
 			$(function(){
 				//1.加载用户笔记本列表
 				loadUserBooks();
@@ -66,27 +67,39 @@
 		                searchNote();
 		             }
 		         });
+				//17."更多"按钮单击处理
+				$('#more_note').click(loadMoreSharePage)
+				//18.绑定搜索笔记LI单击事件
+				$('#pc_part_6 ul').on('click','li',loadShare)
 			})
-	  	function searchNote(){
+	  	function loadShare(){
 				//获取请求参数
-				var keyword= $("#search_note").val();
+				var shareId=$(this).data('shareId');
 				//校验请求参数
 				var ok=true;
-				if(!keyword){
-					alert("请输入搜索关键字");
+				if(!shareId){
+					alert('请选择分享笔记');
 					ok=false;
 				}
-				//校验完成,发送ajax请求
+				//发送ajax请求
 				if(ok){
 					$.ajax({
-						url:base_path+"/note/search.do",
+						url:base_path+"/note/loadShare.do",
 						type:"post",
-						data:{"keyword":keyword},
+						data:{"shareId":shareId},
 						dataType:"json",
-						success:function(){
-					
+						success:function(result){
+							if(result.status==0){
+								//获取回调参数
+								var title=result.data.cn_share_title;
+								var body=result.data.cn_share_body;
+								$('#pc_part_5').show();
+								$('#pc_part_3').hide();
+								$('#noput_note_title').html(title);
+								$('#noput_note_title').next().html(body);
+							}
 						},
-						error:function(){alert("搜索异常")}
+						error:function(){alert("载入分享笔记异常")}
 					})
 				}
 			}

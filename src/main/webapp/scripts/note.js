@@ -1,3 +1,51 @@
+//16.搜索笔记列表
+function searchNote(){
+		//获取请求参数
+		$("#pc_part_6 ul").empty();
+		keyword= $("#search_note").val().trim();
+		page=1;
+		closeNotesWindow();
+		$("#pc_part_6").show();
+		//发送ajax请求
+		searchSharePage(keyword,page);
+}
+//17.加载更多笔记列表
+function loadMoreSharePage(){
+		page+=1;
+		searchSharePage(keyword,page);
+}
+//分页加载搜索笔记
+function searchSharePage(keyword,page){
+	$.ajax({
+		url:base_path+"/note/search.do",
+		type:"post",
+		data:{"keyword":keyword,"page":page},
+		dataType:"json",
+		success:function(result){
+			if(result.status==0){
+				var notes=result.data
+				for (var i = 0; i < notes.length; i++) {
+					var shareId=notes[i].cn_share_id;
+					console.log(shareId);
+					var title=notes[i].cn_share_title;
+					console.log(title);
+					var sli="";
+					sli+='<li class="online">';
+					sli+='	<a>';
+					sli+='		<i class="fa fa-file-text-o" title="online" rel="tooltip-bottom"></i>';
+					sli+=				title;
+					sli+='		<button type="button" class="btn btn-default btn-xs btn_position btn_slide_down"><i class="fa fa-star"></i></button>';
+					sli+='	</a>';
+					sli+='</li>';
+					var $li=$(sli);
+						$li.data("shareId",shareId);
+					$("#pc_part_6 ul").append($li);
+				}
+			}
+		},
+		error:function(){alert("搜索异常")}
+	})
+}
 //分享笔记
 function shareNote(){
 	//获取请求参数
@@ -215,7 +263,8 @@ function loadBookNotes(){
 			if(result.status==0){
 				var notes=result.data;
 				$("#note_ul").empty()
-					
+				closeNotesWindow();
+				$('#pc_part_2').show();
 				for (var i = 0; i < notes.length; i++) {
 					//获取笔记ID,标题和分享类型号
 					var noteId=notes[i].cn_note_id;
@@ -249,6 +298,8 @@ function loadNotes(){
 		dataType:"json",
 		success:function(result){
 			if(result.status==0){
+				$('#pc_part_3').show();
+				$('#pc_part_5').hide();
 				var title=result.data.cn_note_title;//获取笔记标题
 				var content=result.data.cn_note_body;//获取笔记内容
 				//设置编辑区域
@@ -304,4 +355,13 @@ function createShareNoteLi(noteTitle,noteId){
 	var $li=$(sli);
 		$li.data("noteId",noteId);
 	return $li;
+}
+
+//关闭所有笔记列表层
+function closeNotesWindow(){
+	$("#pc_part_2").hide();
+	$("#pc_part_4").hide();
+	$("#pc_part_6").hide();
+	$("#pc_part_7").hide();
+	$("#pc_part_8").hide();
 }
