@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>笔记搜索</title>
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
+<script>
+	$(function(){
+		$('#search_btn').click(function(){
+			var title=$('#title').val().trim();
+			var status=$('#status').val();
+			var begin=$('#begin').val().trim();
+			var end=$('#end').val().trim();
+			$.ajax({
+				url:"note/searchnotes.do",
+				type:"post",
+				data:{"title":title,"status":status,
+					"begin":begin,"end":end},
+				dataType:"json",
+				success:function(result){
+					if(result.status==0){
+						$('table').empty();
+						var notes=result.data;
+						for (var i = 0; i < notes.length; i++) {
+							var id=notes[i].cn_note_id;
+							var title=notes[i].cn_note_title;
+							var  str="";
+								 str+="<tr>";
+								 str+=	"<td>"+id+"</td>";
+								 str+=	"<td>"+title+"</td>";
+								 str+="</tr>";
+							$('table').append(str);
+						}
+					}
+				},
+				error:function(){alert("搜索异常");}
+			})
+		})
+	})
+</script>
+</head>
+<body>
+标题:<input type="text" id="title"/>
+状态:<select id="status">
+		<option value="0">全部</option>
+		<option value="1">正常</option>
+		<option value="2">删除</option>
+	</select>
+开始日期:<input type="text" id="begin"/>
+结束日期:<input type="text" id="end"/>
+<input type="button" value="开始搜索" id="search_btn"/>
+<hr/>
+<table></table>
+</body>
+</html>

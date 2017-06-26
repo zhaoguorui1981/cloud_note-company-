@@ -1,6 +1,7 @@
 package cn.tedu.cloudnote.service;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -190,6 +191,29 @@ public class NoteServiceImpl implements Serializable, NoteService {
 			nr.setMsg("分享笔记加载成功");
 			nr.setData(share);
 		}
+		return nr;
+	}
+	public NoteResult searchNotes(String title, String status, String beginStr, String endStr) {
+		Map<String,Object> params=new HashMap<String,Object>();
+		if(title!=null && "".equals(title)){
+			params.put("title", "%"+title+"%");
+		}
+		if(!"0".equals(status)){
+			params.put("status", status);
+		}
+		if(beginStr!=null && !"".equals(beginStr)){
+			Date beginDate=Date.valueOf(beginStr);
+			params.put("begin", beginDate.getTime());
+		}
+		if(endStr!=null && !"".equals(endStr)){
+			Date endDate=Date.valueOf(endStr);
+			params.put("begin", endDate.getTime());
+		}
+		List<Note>list=dao.findNotes(params);
+		NoteResult nr=new NoteResult();
+		nr.setStatus(0);
+		nr.setMsg("搜索完毕");
+		nr.setData(list);
 		return nr;
 	}
 	

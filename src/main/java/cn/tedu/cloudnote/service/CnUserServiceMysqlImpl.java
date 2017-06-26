@@ -61,7 +61,8 @@ public class CnUserServiceMysqlImpl implements CnUserService{
 			user.setCn_user_password(md5_pwd);
 			user.setCn_user_id(NoteUtil.createId());
 			dao.save(user);
-			
+			String s=null;
+			s.length();
 			nr.setStatus(0);
 			nr.setMsg("注册成功");
 			return nr;
