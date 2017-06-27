@@ -47,7 +47,7 @@ public class NoteServiceImpl implements Serializable, NoteService {
 		note.setCn_note_title(title);
 		Long time=System.currentTimeMillis();
 		note.setCn_note_last_modify_time(time);
-		int index=dao.updateNote(note);
+		int index=dao.dynamicUpdate(note);
 		NoteResult nr=new NoteResult();
 		if(index>0){
 			nr.setStatus(0);
@@ -80,8 +80,11 @@ public class NoteServiceImpl implements Serializable, NoteService {
 		return nr;
 	}
 	public NoteResult deleteNote(String noteId) {
+		Note note=new Note();
+		note.setCn_note_id(noteId);
 		NoteResult nr=new NoteResult();
-		int index=dao.updateStatus(noteId);
+		note.setCn_note_status_id("2");
+		int index=dao.dynamicUpdate(note);
 		if(index>0){
 			nr.setStatus(0);
 			nr.setMsg("删除成功");
@@ -107,11 +110,13 @@ public class NoteServiceImpl implements Serializable, NoteService {
 //		return nr;
 //	}
 	public NoteResult moveNote(String noteId, String bookId) {
-		
-		Map map=new HashMap();
-		map.put("noteId", noteId);
-		map.put("bookId", bookId);
-		int rows=dao.updateBookId(map);
+		 Note note=new Note();
+		 note.setCn_note_id(noteId);
+		 note.setCn_notebook_id(bookId);
+//		Map map=new HashMap();
+//		map.put("noteId", noteId);
+//		map.put("bookId", bookId);
+		int rows=dao.dynamicUpdate(note);
 		NoteResult nr=new NoteResult();
 		if(rows>0){
 			nr.setStatus(0);
@@ -146,7 +151,8 @@ public class NoteServiceImpl implements Serializable, NoteService {
 				if(rows>0){
 					//将分享成功的文章在note表中typeid变更为2
 					note.setCn_note_type_id("2");
-					dao.updateNoteTypeId(note);
+					note.setCn_note_id(noteId);
+					dao.dynamicUpdate(note);
 					nr.setStatus(0);
 					nr.setMsg("文章分享成功");
 				}else{
@@ -195,7 +201,7 @@ public class NoteServiceImpl implements Serializable, NoteService {
 	}
 	public NoteResult searchNotes(String title, String status, String beginStr, String endStr) {
 		Map<String,Object> params=new HashMap<String,Object>();
-		if(title!=null && "".equals(title)){
+		if(title!=null && !"".equals(title)){
 			params.put("title", "%"+title+"%");
 		}
 		if(!"0".equals(status)){
@@ -207,8 +213,9 @@ public class NoteServiceImpl implements Serializable, NoteService {
 		}
 		if(endStr!=null && !"".equals(endStr)){
 			Date endDate=Date.valueOf(endStr);
-			params.put("begin", endDate.getTime());
+			params.put("end", endDate.getTime());
 		}
+		System.out.println(params);
 		List<Note>list=dao.findNotes(params);
 		NoteResult nr=new NoteResult();
 		nr.setStatus(0);

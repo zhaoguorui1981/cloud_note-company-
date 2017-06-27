@@ -16,6 +16,10 @@ public class SearchNotesController {
 	@RequestMapping("/note/searchnotes.do")
 	@ResponseBody
 	public NoteResult execute(String title,String status,String begin,String end){
+		System.out.println(title);
+		System.out.println(status);
+		System.out.println(begin);
+		System.out.println(end);
 		NoteResult nr=noteService.searchNotes(title, status, begin, end);
 		return nr;
 	}

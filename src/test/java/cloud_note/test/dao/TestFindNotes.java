@@ -15,9 +15,9 @@ public class TestFindNotes extends BaseTest {
 	public void test1(){
 		NoteDAO noteDao=ac.getBean("noteDAO",NoteDAO.class);
 		Map<String,Object> params=new HashMap<String,Object>();
-		params.put("title", "%测试%");
-		params.put("status", "2");
-		params.put("begin", "TO_DATE(2014-06-25 YYYY-MM-DD)");
+//		params.put("title", "%测试%");
+//		params.put("status", "2");
+//		params.put("begin", "TO_DATE(2014-06-25 YYYY-MM-DD)");
 		List<Note> list=noteDao.findNotes(params);
 		for(Note n:list){
 			System.out.println(n);
