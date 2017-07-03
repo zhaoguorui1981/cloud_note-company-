@@ -19,10 +19,10 @@ public class ExceptionBean {
 			PrintWriter pw=new PrintWriter(fw);
 			SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			String time=sdf.format(new Date());
-			pw.println("***************************");
+			pw.println("************************************");
 			pw.println("*发生时间:"+time);
 			pw.println("*异常类型:"+e);
-			pw.println("*********异常详情************");
+			pw.println("***************异常详情***************");
 			e.printStackTrace(pw);
 			pw.close();
 			fw.close();

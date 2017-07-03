@@ -1,6 +1,7 @@
 package cn.tedu.cloudnote.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CnUser implements Serializable{
 	 private String cn_user_id;
@@ -8,6 +9,13 @@ public class CnUser implements Serializable{
 	 private String cn_user_password;
 	 private String cn_user_token;
 	 private String cn_user_nick;
+	 private List<NoteBook> books;
+	public List<NoteBook> getBooks() {
+		return books;
+	}
+	public void setBooks(List<NoteBook> books) {
+		this.books = books;
+	}
 	public String getCn_user_id() {
 		return cn_user_id;
 	}

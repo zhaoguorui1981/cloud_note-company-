@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"      
+ "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="cn.tedu.cloudnote.dao.AssociationDAO">
+	<select id="findAllBook" resultMap="bookMap2">
+		SELECT *
+		FROM cn_user u join cn_notebook b
+				on(b.cn_user_id=u.cn_user_id)
+	</select>
+	<resultMap type="cn.tedu.cloudnote.entity.NoteBook" id="bookMap2">
+		
+		<id property="cn_notebook_id" column="cn_notebook_id"/>
+		<result property="cn_user_id" column="cn_user_id"/>
+		<result property="cn_notebook_type_id" column="cn_notebook_type_id"/>
+		<result property="cn_notebook_name" column="cn_notebook_name"/>
+		<result property="cn_notebook_desc" column="cn_notebook_desc"/>
+		<result property="cn_notebook_createtime" column="cn_notebook_createtime"/>
+		<association property="user" 
+			javaType="cn.tedu.cloudnote.entity.CnUser">
+			<id property="cn_user_id" column="cn_user_id"/>
+			<result property="cn_user_name" column="cn_user_name"/>
+			<result property="cn_user_password" column="cn_user_password"/>
+			<result property="cn_user_token" column="cn_user_token"/>
+			<result property="cn_user_nick" column="cn_user_nick"/>
+		</association>
+	</resultMap>
+	<!-- 	<select id="findAllBook" 
+			resultMap="bookMap1">
+		SELECT * FROM cn_notebook
+	</select>  -->
+
+	<select id="findById" 
+			parameterType="string" 
+			resultMap="bookMap1">
+		SELECT * FROM cn_notebook
+		WHERE cn_notebook_id=#{bookId}
+	</select>
+	<!-- 自定义数据装载规则 -->
+	<resultMap type="cn.tedu.cloudnote.entity.NoteBook" id="bookMap1">
+		<!-- 属性加载时,名称一致可以省略 -->
+		<!-- 指定user属性的加载 -->
+		<association property="user" javaType="cn.tedu.cloudnote.entity.CnUser"
+					 select="findUser" column="cn_user_id">
+		</association>
+	</resultMap>
+	<select id="findUser" parameterType="string" resultType="cn.tedu.cloudnote.entity.CnUser">
+		select * from cn_user
+		where cn_user_id=#{userId}
+	</select>
+</mapper>
